@@ -1,0 +1,34 @@
+#!/usr/bin/python
+
+from __future__ import print_function
+import socket
+import sys
+import argparse
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+def get_ip(ip):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect((ip, 1)) # The port doesn't really matter
+        addr, _ = s.getsockname()
+        return addr
+    except socket.error:
+        eprint('ERROR: %s is unreachable' % ip)
+        exit(1)
+    finally:
+        s.close()
+
+
+def main():
+    remote = '8.8.8.8'
+    if len(sys.argv) > 1:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('remote_host', help='Remote target')
+        args = parser.parse_args()
+        remote = args.remote_host
+    print(get_ip(remote))
+
+if __name__ == '__main__':
+    main()
