@@ -1,4 +1,7 @@
 #!/usr/bin/python
+"""
+Prints the LOCAL ip
+"""
 
 from __future__ import print_function
 import socket
